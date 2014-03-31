@@ -18,6 +18,9 @@ namespace RobbinsD_FatPot_3n_1Problem
 
         private static void StartApp()
         {
+            /**
+             * TODO: HANDLE DECIMALS
+             */
             Console.Write("Enter a pair of comma or space-separated integers, e.g.(i, j)\nOr enter a blank line to exit: ");
             string userInput;
             while ((userInput = Console.ReadLine()) != "")

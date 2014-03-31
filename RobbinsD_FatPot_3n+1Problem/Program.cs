@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -22,31 +23,56 @@ namespace RobbinsD_FatPot_3n_1Problem
              * TODO: HANDLE DECIMALS
              */
             Console.Write("Enter a pair of comma or space-separated integers, e.g.(i, j)\nOr enter a blank line to exit: ");
-            string userInput;
-            while ((userInput = Console.ReadLine()) != "")
-            {
-                string[] splitString = userInput.Split(", ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                if (splitString.Length == 2)
+            using (StreamReader reader = new StreamReader(Console.OpenStandardInput()))
+            while (!reader.EndOfStream) {
+                string userInput = reader.ReadLine();
+                if (userInput != "")
                 {
-                    ParseIntsAndCalculate(splitString);
+                    string[] splitString = userInput.Split(", ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    if (splitString.Length == 2)
+                    {
+                        ParseIntsAndCalculate(splitString);
+                    }
+                    Console.Write("Enter another pair of integers, or leave blank to exit: ");
                 }
-                Console.Write("Enter another pair of integers, or leave blank to exit: ");
+                else
+                    break;
             }
-            Console.WriteLine("End of File or blank line entered; Will exit in 3 seconds...");
-            Thread.Sleep(3000);
+            Terminate();
+        }
+
+        private static void Terminate()
+        {
+            Console.WriteLine("\nProgram Terminating in:");
+            Thread.Sleep(500);
+            Console.Write("3.....");
+            Thread.Sleep(1000);
+            Console.Write("2.....");
+            Thread.Sleep(1000);
+            Console.Write("1.....");
+            Thread.Sleep(1000);
+            Console.Write("Goodbye.");
         }
 
         private static void ParseIntsAndCalculate(string[] splitString)
         {
-            int i = int.Parse(splitString[0]);
-            int j = int.Parse(splitString[1]);
-            if (i >= 1000000 || j >= 1000000 || i <= 0 || j <= 0)
+            try
             {
-                Console.WriteLine("Invalid integers. Both values must be less than 1,000,000 and greater than 0.");
+                int i = int.Parse(splitString[0]);
+                int j = int.Parse(splitString[1]);
+            
+                if (i >= 1000000 || j >= 1000000 || i <= 0 || j <= 0)
+                {
+                    Console.WriteLine("Invalid integers. Both values must be less than 1,000,000 and greater than 0.");
+                }
+                else
+                {
+                    DetermineMaxCycleLength(i, j);
+                }
             }
-            else
+            catch (FormatException fe)
             {
-                DetermineMaxCycleLength(i, j);
+                Console.WriteLine("You must enter whole numbers.");
             }
         }
 
